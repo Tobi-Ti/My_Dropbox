@@ -21,15 +21,9 @@ export default function Dashboard() {
 
   const [searchQuery, setSearchQuery] = useState(""); 
 
-
   const handleBack = () => {
     navigate(-1);
   };
-
-
-  console.log("Child Folders:", childFolders);
-  console.log("Child Files:", childFiles);
-  console.log("Search Query:", searchQuery);
 
   const filteredFolders = childFolders.filter((folder) =>
     folder.name?.toLowerCase().includes(searchQuery.toLowerCase())
@@ -38,9 +32,6 @@ export default function Dashboard() {
   const filteredFiles = childFiles.filter((file) =>
     file.name?.toLowerCase().includes(searchQuery.toLowerCase())
   );
-
-  console.log("Filtered Folders:", filteredFolders);
-  console.log("Filtered Files:", filteredFiles);
 
   if (folder === undefined || folder === null) {
     return (
@@ -56,39 +47,33 @@ export default function Dashboard() {
       <Box p={4} bg="gray.50" minHeight="100vh">
 
         {/* Back Button and Search Bar */}
-        
         <Flex align="center" justify="space-between" mb={4}>
-          
-            <Tooltip label="Go Back" fontSize="md">
-              <IconButton
-                icon={<ArrowBackIcon />}
-                colorScheme="teal"
-                variant="outline"
-                size={"md"}
-                isRound
-                onClick={handleBack}
-                aria-label="Go back"
-               
-              />
-            </Tooltip>
-            <Box mx={500} /> {/* Space between buttons */}
-            <Input
-              placeholder="Search files and folders"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              maxWidth="300px"
-            />
+          <Tooltip label="Go Back" fontSize="md">
             <IconButton
-              aria-label="Search"
-              icon={<SearchIcon />}
-              onClick={() => console.log("Search Clicked")}
+              icon={<ArrowBackIcon />}
               colorScheme="teal"
-              variant="solid"
-              ml={2}
+              variant="outline"
+              size={"md"}
+              isRound
+              onClick={handleBack}
+              aria-label="Go back"
             />
-          
-
-          
+          </Tooltip>
+          <Box mx={500} />
+          <Input
+            placeholder="Search files and folders"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            maxWidth="300px"
+          />
+          <IconButton
+            aria-label="Search"
+            icon={<SearchIcon />}
+            onClick={() => console.log("Search Clicked")}
+            colorScheme="teal"
+            variant="solid"
+            ml={2}
+          />
         </Flex>
 
         {/* Folder Breadcrumbs */}
@@ -96,10 +81,10 @@ export default function Dashboard() {
           {folder && <FolderBreadcrumbs currentFolder={folder} />}
         </Flex>
 
-        {/* Search Bar */}
+        {/* Add Folder and File Buttons */}
         <Flex justify="center" mb={4} alignItems="center">
           <AddFileButton currentFolder={folder} />
-          <Box mx={10} /> {/* Space between buttons */}
+          <Box mx={10} />
           <Tooltip label="Create a folder" aria-label="Create a folder">
             <AddFolderButton currentFolder={folder} />
           </Tooltip>
@@ -114,7 +99,7 @@ export default function Dashboard() {
                 <Box
                   key={childFolder.id}
                   p={3}
-                  bg="white"
+                  bg={searchQuery && childFolder.name.toLowerCase().includes(searchQuery.toLowerCase()) ? "blue.200" : "white"}
                   boxShadow="md"
                   borderRadius="md"
                   _hover={{ boxShadow: "lg", transition: "0.2s" }}
@@ -142,7 +127,7 @@ export default function Dashboard() {
                 <Box
                   key={childFile.id}
                   p={3}
-                  bg="white"
+                  bg={searchQuery && childFile.name.toLowerCase().includes(searchQuery.toLowerCase()) ? "blue.200" : "white"}
                   boxShadow="md"
                   borderRadius="md"
                   _hover={{ boxShadow: "lg", transition: "0.2s" }}
